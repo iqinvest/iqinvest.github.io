@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+    <head>
+        <title>iq exchange</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+        <meta name="description" content="the first true decentralized exchange for the iq invest token" />
+        <meta name="keywords" content="iq, iqi, ethereum, decentralized, exchange, token, invest" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <link rel="icon" href="assets/icon.png" />
+        <link rel="stylesheet" href="assets/style.css" />
+    </head>
+    <body>
+        <div id="notFooter">
+            <div id="header">
+                <div>
+                    <img id="headerLogo" src="assets/logo.svg" width="64" height="64" title="logo" />
+                </div>
+                <div>
+                    <button class="active" id="headerExchange" type="button">exchange</button>
+                </div>
+                <div>
+                    <button id="headerFaq" type="button">faq</button>
+                </div>
+            </div>
+            <div id="main">
+                <div id="exchange">
+                    <h1>
+                        <a id="exchangeAddress" target="_blank" rel="noopener">exchange</a>
+                        for iq invest
+                        <a id="tokenAddress" target="_blank" rel="noopener">token</a>
+                    </h1>
+                    <div id="message">
+                        <p id="loading">loading...</p>
+                        <p id="notSupported">
+                            install
+                            <a target="_blank" rel="noopener" href="https://metamask.io">metamask</a>
+                            to continue
+                        </p>
+                        <p id="switchNetwork">switch the network</p>
+                    </div>
+                    <div id="halfContainer">
+                        <div class="half">
+                            <div class="box">
+                                <div class="boxHeader">
+                                    <div class="boxHeaderItem">
+                                        <button class="active" id="buyButton" type="button">buy</button>
+                                    </div>
+                                    <div class="boxHeaderItem">
+                                        <button id="sellButton" type="button">sell</button>
+                                    </div>
+                                </div>
+                                <p id="balanceContainer">
+                                    your balance
+                                    <span id="balanceEth">...</span>
+                                    eth,
+                                    <span id="balanceTokens">...</span>
+                                    tokens
+                                </p>
+                                <label>
+                                    from
+                                    <span id="exchangeTopLabel">eth</span>
+                                    <span class="hint" id="exchangeTopHint"></span>
+                                    <input id="exchangeTopInput" type="text" maxlength="30" />
+                                </label>
+                                <label>
+                                    to
+                                    <span id="exchangeBottomLabel">tokens</span>
+                                    <span class="hint" id="exchangeBottomHint"></span>
+                                    <input id="exchangeBottomInput" type="text" maxlength="30" />
+                                </label>
+                                <button id="exchangeButton" type="button">connect</button>
+                            </div>
+                        </div>
+                        <div class="half">
+                            <div class="box">
+                                <object id="price" type="image/svg+xml" data="assets/price.svg"></object>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="logs"></div>
+                </div>
+                <div id="faq">
+                    <h1>faq</h1>
+                    <ul>
+                        <li>
+                            <h2>What's iq invest?</h2>
+                            <p>Iq invest is the small company consisting of blockchain developers and economists. Our goal is to develop and share the blockchain wisdom by mastering the existing market and creating the new ones.
+                            </p>
+                        </li>
+                        <li>
+                            <h2>What's token?</h2>
+                            <p>Token is an ethereum-based <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Share_(finance)">share</a>. <a target="_blank" rel="noopener" href="https://ethereum.org">Ethereum</a> is the first world-wide money that allows applications to directly use this money. Tokens are stored in the ethereum network and regulated by computer code, unlike ordinary shares, which are controlled by an obsolete national economy. By owning a token, you own an ethereum-based company.</p>
+                        </li>
+                        <li>
+                            <h2>What's this website for?</h2>
+                            <p>This is a market where anyone can buy and sell iq token.</p>
+                        </li>
+                        <li>
+                            <h2>Why do I need metamask?</h2>
+                            <p><a target="_blank" rel="noopener" href="https://metamask.io">Metamask</a> is an ethereum <a target="_blank" rel="noopener" href="https://ethereum.org/en/wallets">wallet</a>. You need it in order to connect to the ethereum network and keep your accounts. Follow the <a target="_blank" rel="noopener" href="https://metamask.io/download.html">instructions</a> to install and use your wallet.</p>
+                        </li>
+                        <li>
+                            <h2>Which network should I use?</h2>
+                            <p>Iq token deployed on main network and ropsten test network. You can use both of it. Tokens and ethereum have a market value only in the main network. You can use the ropsten test network to understand how the exchange works. The token and exchange in the test network have exactly the same functionality, but the ropsten ethereum is <a target="_blank" rel="noopener" href="https://faucet.metamask.io/">free</a>. Contact us if you want to use any other (not ropsten) test network.</p>
+                        </li>
+                        <li>
+                            <h2>How is the token price determined?</h2>
+                            <p>The token price depends on the number of tokens on the exchange. We use a simple linear function, because of the easier calculation and therefore lower trasaction fee.</p>
+                            <p>p = 1 - v/5000000, where</p>
+                            <p>p - price, eth/token</p>
+                            <p>v - number of tokens on the exchange</p>
+                            <p> This way the law of supply and demand is emulated without an order book, which makes it very easy to trade tokens.</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="footer">
+            <div>
+                <a href="mailto:iqi@tutanota.com" title="iqi@tutanota.com">mail</a>
+            </div>
+            <div>
+                <a target="_blank" rel="noopener" href="https://github.com/iqinvest" title="github.com/iqinvest">github</a>
+            </div>
+            <div>
+                <a target="_blank" rel="noopener" href="https://t.me/CEO_glo" title="@CEO_glo">telegram</a>
+            </div>
+        </div>
+        <script src="assets/script.js"></script>
+    </body>
+</html>
