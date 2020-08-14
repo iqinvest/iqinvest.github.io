@@ -175,7 +175,7 @@ label input:focus {
     overflow: hidden;
     text-overflow: ellipsis;
 }
-#faq {
+#faq, #bounty {
     display: none;
 }
 h2 {

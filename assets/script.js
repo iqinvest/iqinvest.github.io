@@ -158,6 +158,7 @@
     ];
     var pageExchange = 0;
     var pageFaq = 1;
+    var pageBounty = 2;
     var networkMain = 1;
     var networkRopsten = 3;
     var networkGoerli = 5;
@@ -180,11 +181,11 @@
         document.getElementById('headerLogo').onclick = function () {
             setPage(pageExchange);
         }
-        document.getElementById('headerExchange').onclick = function () {
-            setPage(pageExchange);
-        }
         document.getElementById('headerFaq').onclick = function () {
             setPage(pageFaq);
+        }
+        document.getElementById('headerBounty').onclick = function () {
+            setPage(pageBounty);
         }
         document.getElementById('buyButton').onclick = function () {
             setTab(true);
@@ -476,6 +477,7 @@
                 waitMessage = document.createElement('span');
                 waitMessage.innerHTML = ', waiting confirmation...';
                 printLog('tx/' + hash, 'approve, ', hash, waitMessage);
+                alert('confirm seconf transaction');
                 transfer();
             }).on('confirmation', function (confirmationNumber, receipt) {
                 if (confirmationNumber == 0) {
@@ -514,8 +516,9 @@
         page = newPage;
         document.getElementById('exchange').style.display = page === pageExchange ? 'block' : 'none';
         document.getElementById('faq').style.display = page === pageFaq ? 'block' : 'none';
-        document.getElementById('headerExchange').className = page === pageExchange ? 'active' : '';
+        document.getElementById('bounty').style.display = page === pageBounty ? 'block' : 'none';
         document.getElementById('headerFaq').className = page === pageFaq ? 'active' : '';
+        document.getElementById('headerBounty').className = page === pageBounty ? 'active' : '';
     }
 
     function setTab(newTabBuy) {
