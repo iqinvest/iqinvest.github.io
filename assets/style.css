@@ -189,6 +189,14 @@ li {
     list-style-type: none;
     padding: 0px;
 }
+.line {
+    position: relative;
+    top: -16px;
+    left: 16px;
+    width: 4px;
+    height: 32px;
+    background: #49BCE7;
+}
 #footer {
     overflow: auto;
 }
