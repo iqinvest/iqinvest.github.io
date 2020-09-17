@@ -169,7 +169,7 @@ label input:focus {
     height: 360px;
 }
 #logs {
-    margin: 20px 15px;
+    margin: 20px;
 }
 .onestring {
     overflow: hidden;
