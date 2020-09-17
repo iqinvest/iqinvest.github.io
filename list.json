@@ -1,7 +1,7 @@
 {
-  "name": "_ iq invest token list",
-  "timestamp": "2020-09-11T00:00:00Z",
-  "version": {"major": 1, "minor": 0, "patch": 0},
+  "name": "_ iq invest _",
+  "timestamp": "2020-09-17T00:00:00Z",
+  "version": {"major": 1, "minor": 0, "patch": 1},
   "tokens": [
     {
       "chainId": 1,
