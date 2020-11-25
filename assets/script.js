@@ -479,7 +479,7 @@
             from: account,
             value: eth.shiftedBy(18)
         }).on('transactionHash', function (hash) {
-            message = logTx('purchase for ' + eth + ' ETH, ', hash);
+            message = logTx('purchase for ' + eth + ' ETH', hash);
             blocked = false;
         }).on('confirmation', function (confirmationNumber, receipt) {
             if (confirmationNumber != 0) {
@@ -534,7 +534,7 @@
             ).send({
                 from: account
             }).on('transactionHash', function (hash) {
-                message = logTx('approve, ', hash);
+                message = logTx('approve', hash);
                 alert('confirm second transaction');
                 transfer();
             }).on('confirmation', function (confirmationNumber, receipt) {
@@ -561,7 +561,7 @@
             exchange.methods.sell(tokens.shiftedBy(18).toFixed(0)).send({
                 from: account
             }).on('transactionHash', function (hash) {
-                message = logTx('sale ' + tokens + ' IQI, ', hash);
+                message = logTx('sale ' + tokens + ' IQI', hash);
                 blocked = false;
             }).on('confirmation', function (confirmationNumber, receipt) {
                 if (confirmationNumber != 0) {
