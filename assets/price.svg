@@ -8,7 +8,8 @@
     #price = price;
     #balance = balance;
 -->
-<svg xmlns="http://www.w3.org/2000/svg" baseProfile="full" viewBox="0 0 360 360" preserveAspectRatio="xMidYMid meet">
+<svg xmlns="http://www.w3.org/2000/svg" baseProfile="full" viewBox="0 0 360 360"
+     preserveAspectRatio="xMidYMid meet">
     <g stroke="#49BCE7" stroke-width="4">
         <line x1="30" y1="5" x2="30" y2="332" />
         <line x1="28" y1="330" x2="355" y2="330" />

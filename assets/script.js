@@ -1,12 +1,12 @@
 "use strict";
 
 (function () {
-    var mainTokenAddress = '0xB9076BB251285aa70E05d38fB1c061474AeFdb7a';
-    var mainExchangeAddress = '0x102d766eF1c910CFa3337fC59aCE9E38Aa993e20';
-    var ropstenTokenAddress = '0xe7286c430B35CE0ab7539210bD21F528dA5e5670';
-    var ropstenExchangeAddress = '0xcEfe405674339E93D8b7E7329Bfaf22D7d7923c9';
-    var goerliTokenAddress = '';
-    var goerliExchangeAddress = '';
+    var pageExchange = 0;
+    var pageFaq = 1;
+    var pageBounty = 2;
+    var pagePartners = 3;
+    var networkMain = 1;
+    var networkRopsten = 3;
     var tokenAbi = [
         {
             "constant": false,
@@ -156,29 +156,24 @@
             "type": "function"
         }
     ];
-    var pageExchange = 0;
-    var pageFaq = 1;
-    var pageBounty = 2;
-    var networkMain = 1;
-    var networkRopsten = 3;
-    var networkGoerli = 5;
+    var mainTokenAddress = '0xB9076BB251285aa70E05d38fB1c061474AeFdb7a';
+    var mainExchangeAddress = '0x102d766eF1c910CFa3337fC59aCE9E38Aa993e20';
+    var ropstenTokenAddress = '0xe7286c430B35CE0ab7539210bD21F528dA5e5670';
+    var ropstenExchangeAddress = '0xcEfe405674339E93D8b7E7329Bfaf22D7d7923c9';
 
-    var page = pageExchange; // current page displayed
+    var page = pageExchange;
     var tabBuy = true; // if true, tab buy, else tab sell
-    var blocked = true; // block button if there is unfinished action or page is not loaded
-    var network = null; // current network or null (if there is no address for this network)
-    var tokenContract = null; // instance of web3.Contract or null
-    var exchangeContract = null; // instance of web3.Contract or null
-    var account = null; // string '0x....' or null (if logout)
+    var network = null;
+    var token, exchange; // contract
+    var account = null;
+    var blocked = false;
     var exchangeEth = null; // BigNumber, exchange balance in eth, or null
     var exchangeTokens = null; // BigNumber, exchange balance in tokens (*10^18), or null
     var accountEth = null; // BigNumber, account balance in eth, or null
     var accountTokens = null; // BigNumber, token balance (*10^18), or null
-    var eventTokenBlockHash; // block hash of the last event for token
-    var eventExchangeBlockHash; // block hash of the last event for exchange
 
     window.onload = function () {
-        document.getElementById('headerLogo').onclick = function () {
+        document.getElementById('headerStart').onclick = function () {
             setPage(pageExchange);
         }
         document.getElementById('headerFaq').onclick = function () {
@@ -187,6 +182,9 @@
         document.getElementById('headerBounty').onclick = function () {
             setPage(pageBounty);
         }
+        document.getElementById('headerPartners').onclick = function () {
+            setPage(pagePartners);
+        }
         document.getElementById('buyButton').onclick = function () {
             setTab(true);
         }
@@ -194,18 +192,27 @@
             setTab(false);
         }
         document.getElementById('exchangeButton').onclick = exchange;
-        printContractLinks(networkMain);
 
-        loadScript('assets/bignumber.min.js', function () {
-            loadScript('assets/web3.min.js', init);
-        });
-
-        function loadScript(url, callback) {
-            var script = document.createElement('script');
-            script.src = url;
-            script.onload = callback;
-            document.body.appendChild(script);
-        }
+        var script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js';
+        script.onload = function () {
+            if (typeof window.ethereum === 'undefined') {
+                document.getElementById('startMessage').innerHTML = 'install ' +
+                    '<a href="https://metamask.io/download.html" target="_blank" rel="noopener">' +
+                    'metamask</a> or use ' +
+                    '<a href="https://opera.com" target="_blank" rel="noopener">opera</a>';
+            } else {
+                document.getElementById('startMessage').innerHTML = '';
+                window.web3 = new Web3(ethereum);
+                load();
+                if (typeof ethereum.on !== 'undefined') {
+                    ethereum.on('chainChanged', load);
+                    ethereum.on('accountsChanged', load);
+                    ethereum.autoRefreshOnNetworkChange = false;
+                }
+            }
+        };
+        document.body.appendChild(script);
 
         document.getElementById('exchangeTopInput').onchange = calculateBottom;
         document.getElementById('exchangeBottomInput').onchange = calculateTop;
@@ -213,116 +220,128 @@
         document.getElementById('exchangeBottomInput').oninput = calculateTop;
     };
 
-    function init() {
-        if (typeof window.ethereum === 'undefined') {
-            document.getElementById('notSupported').style.display = 'block';
-            document.getElementById('loading').style.display = 'none';
-        } else {
-            window.web3 = new Web3(ethereum);
-            ethereum.on('accountsChanged', function (accounts) {
-                if (accounts.length > 0) {
-                    if (accounts[0] !== account) {
-                        blocked = true;
-                        account = accounts[0];
-                        clearAccount();
+    function setPage(newPage) {
+        if (page === newPage) {
+            return;
+        }
+        page = newPage;
+        document.getElementById('headerFaq').className = page === pageFaq ? 'active' : '';
+        document.getElementById('headerBounty').className = page === pageBounty ? 'active' : '';
+        document.getElementById('headerPartners').className = page === pagePartners ? 'active' : '';
+        document.getElementById('exchange').style.display = page === pageExchange ? 'block' : 'none';
+        document.getElementById('faq').style.display = page === pageFaq ? 'block' : 'none';
+        document.getElementById('bounty').style.display = page === pageBounty ? 'block' : 'none';
+        document.getElementById('partners').style.display = page === pagePartners ? 'block' : 'none';
+    }
+
+    function setTab(newTabBuy) {
+        if (tabBuy === newTabBuy) {
+            return;
+        }
+        tabBuy = newTabBuy;
+        document.getElementById('exchangeTopLabel').innerHTML = tabBuy ? 'eth' : 'tokens';
+        document.getElementById('exchangeTopHint').innerHTML = '';
+        document.getElementById('exchangeTopInput').value = '';
+        document.getElementById('exchangeBottomLabel').innerHTML = tabBuy ? 'tokens' : 'eth';
+        document.getElementById('exchangeBottomHint').innerHTML = '';
+        document.getElementById('exchangeBottomInput').value = '';
+        if (account !== null) {
+            document.getElementById('exchangeButton').innerHTML = tabBuy ? 'buy' : 'sell';
+        }
+        document.getElementById('buyButton').className = tabBuy ? 'active' : '';
+        document.getElementById('sellButton').className = tabBuy ? '' : 'active';
+    }
+
+    function load() {
+        web3.eth.getChainId().then(function (newNetwork) {
+            newNetwork = Number(newNetwork);
+            if (newNetwork !== networkMain && newNetwork !== networkRopsten) {
+                network = null;
+                account = null;
+                printContractLinks(networkMain);
+                document.getElementById('startMessage').innerHTML =
+                    'switch to the mainnet or ropsten testnet';
+                clearAccount();
+                document.getElementById('exchangeButton').innerHTML = 'connect';
+                clearExchangeInfo();
+                document.getElementById('logs').innerHTML = '';
+                return;
+            }
+            if (network !== newNetwork) {
+                network = newNetwork;
+                account = null;
+                var tokenAddress, exchangeAddress;
+                if (network === networkMain) {
+                    tokenAddress = mainTokenAddress;
+                    exchangeAddress = mainExchangeAddress;
+                } else if (network === networkRopsten) {
+                    tokenAddress = ropstenTokenAddress;
+                    exchangeAddress = ropstenExchangeAddress;
+                }
+                token = new web3.eth.Contract(tokenAbi, tokenAddress);
+                exchange = new web3.eth.Contract(exchangeAbi, exchangeAddress);
+                printContractLinks(network);
+                document.getElementById('startMessage').innerHTML = '';
+                clearAccount();
+                clearExchangeInfo();
+                document.getElementById('logs').innerHTML = '';
+                token.events.Transfer().on('data', function () {
+                    if (token !== null && account !== null) {
                         loadAccount();
                     }
-                } else {
+                });
+                exchange.events.allEvents().on('data', function () {
+                    if (exchange !== null) {
+                        loadExchangeInfo();
+                    }
+                });
+            }
+
+            web3.eth.getAccounts().then(function (accounts) {
+                if (accounts.length === 0) {
                     account = null;
                     clearAccount();
                     document.getElementById('exchangeButton').innerHTML = 'connect';
+                    loadExchangeInfo();
                     document.getElementById('logs').innerHTML = '';
+                    return;
                 }
-            });
-            ethereum.on('networkChanged', function (newNetwork) {
-                blocked = true;
-                loadNetwork(newNetwork);
+                if (accounts[0] === account) {
+                    return;
+                }
+                account = accounts[0];
                 clearAccount();
                 loadAccount();
-                document.getElementById('logs').innerHTML = '';
-            });
-            ethereum.autoRefreshOnNetworkChange = false;
-
-            web3.eth.net.getId().then(function (newNetwork) {
-                loadNetwork(newNetwork);
-                document.getElementById('loading').style.display = 'none';
-                blocked = false;
-            });
-        }
-    }
-
-    function loadNetwork(newNetwork) {
-        newNetwork = Number(newNetwork);
-        var tokenAddress, exchangeAddress;
-        if (newNetwork === networkMain && mainTokenAddress && mainExchangeAddress) {
-            tokenAddress = mainTokenAddress;
-            exchangeAddress = mainExchangeAddress;
-        } else if (newNetwork === networkRopsten && ropstenTokenAddress && ropstenExchangeAddress) {
-            tokenAddress = ropstenTokenAddress;
-            exchangeAddress = ropstenExchangeAddress;
-        } else if (newNetwork === networkGoerli && goerliTokenAddress && goerliExchangeAddress) {
-            tokenAddress = goerliTokenAddress;
-            exchangeAddress = goerliExchangeAddress;
-        } else {
-            network = null;
-            tokenContract = null;
-            exchangeContract = null;
-            document.getElementById('switchNetwork').style.display = 'block';
-            printContractLinks(network);
-            clearExchangeInfo();
-            return;
-        }
-        network = newNetwork;
-        tokenContract = new web3.eth.Contract(tokenAbi, tokenAddress);
-        exchangeContract = new web3.eth.Contract(exchangeAbi, exchangeAddress);
-        document.getElementById('switchNetwork').style.display = 'none';
-        printContractLinks(network);
-        clearExchangeInfo();
-        loadExchangeInfo();
-
-        tokenContract.events.Transfer().on('data', function (event) {
-            var hash = event.blockHash;
-            if (eventTokenBlockHash !== hash) {
-                eventTokenBlockHash = hash;
-                loadAccount();
-            }
-        });
-        exchangeContract.events.allEvents().on('data', function (event) {
-            var hash = event.blockHash;
-            if (eventExchangeBlockHash !== hash) {
-                eventExchangeBlockHash = hash;
+                document.getElementById('exchangeButton').innerHTML = tabBuy ? 'buy' : 'sell';
+                clearExchangeInfo();
                 loadExchangeInfo();
+            });
+        }).catch(function (error) {
+            console.error(error);
+            if (error.message) {
+                error = error.message;
             }
+            alert(error);
         });
     }
 
-    function clearExchangeInfo() {
-        exchangeEth = null;
-        exchangeTokens = null;
-
-        var svg = document.getElementById("price").contentDocument;
-        svg.getElementById('price').innerHTML = '...';
-        svg.getElementById('balance').innerHTML = '...';
-        svg.getElementById('line').setAttribute('x1', 190);
-        svg.getElementById('line').setAttribute('y1', 133);
-        svg.getElementById('pointer').setAttribute('cx', 400);
-        svg.getElementById('pointer').setAttribute('cy', 400);
-    }
-
-    function loadExchangeInfo() {
-        if (exchangeContract === null) {
-            return;
+    function printContractLinks(networkId) {
+        var baseUrl, tokenAddress, exchangeAddress;
+        switch (networkId) {
+            case networkRopsten:
+                baseUrl = 'https://ropsten.etherscan.io/address/';
+                tokenAddress = ropstenTokenAddress;
+                exchangeAddress = ropstenExchangeAddress;
+                break;
+            default:
+                baseUrl = 'https://etherscan.io/address/';
+                tokenAddress = mainTokenAddress;
+                exchangeAddress = mainExchangeAddress;
         }
-        web3.eth.getBalance(exchangeContract.options.address).then(function (balance) {
-            exchangeEth = new BigNumber(balance).shiftedBy(-18);
-        });
-        if (tokenContract === null) {
-            return;
-        }
-        tokenContract.methods.balanceOf(exchangeContract.options.address).call().then(function (balance) {
-            exchangeTokens = new BigNumber(balance).shiftedBy(-18);
-            displayExchangeInfo(exchangeTokens);
-        });
+        document.getElementById('tokenAddress').title = tokenAddress;
+        document.getElementById('tokenAddress').href = baseUrl + tokenAddress;
+        document.getElementById('exchangeAddress').title = exchangeAddress;
+        document.getElementById('exchangeAddress').href = baseUrl + exchangeAddress;
     }
 
     function clearAccount() {
@@ -339,12 +358,20 @@
         document.getElementById('exchangeBottomInput').value = '';
     }
 
-    function loadAccount() {
-        if (tokenContract === null || account === null) {
-            blocked = false;
-            return;
-        }
+    function clearExchangeInfo() {
+        exchangeEth = null;
+        exchangeTokens = null;
 
+        var svg = document.getElementById("price").contentDocument;
+        svg.getElementById('price').innerHTML = '...';
+        svg.getElementById('balance').innerHTML = '...';
+        svg.getElementById('line').setAttribute('x1', 190);
+        svg.getElementById('line').setAttribute('y1', 133);
+        svg.getElementById('pointer').setAttribute('cx', 400);
+        svg.getElementById('pointer').setAttribute('cy', 400);
+    }
+
+    function loadAccount() {
         web3.eth.getBalance(account).then(function (balance) {
             accountEth = new BigNumber(balance).shiftedBy(-18);
             if (accountEth.isZero()) {
@@ -355,7 +382,7 @@
                 balance = accountEth.toFixed(3, BigNumber.ROUND_DOWN);
                 document.getElementById('balanceEth').innerHTML = balance;
             }
-            return tokenContract.methods.balanceOf(account).call();
+            return token.methods.balanceOf(account).call();
         }).then(function (balance) {
             accountTokens = new BigNumber(balance).shiftedBy(-18);
             if (accountTokens.isZero()) {
@@ -366,41 +393,67 @@
                 balance = accountTokens.toFixed(3, BigNumber.ROUND_DOWN);
                 document.getElementById('balanceTokens').innerHTML = balance;
             }
-            document.getElementById('exchangeButton').innerHTML = tabBuy ? 'buy' : 'sell';
-            blocked = false;
         }).catch(function (error) {
-            console.log(error.message);
-            blocked = false;
+            console.error(error);
+            if (error.message) {
+                error = error.message;
+            }
+            alert(error);
+        });
+    }
+
+    function loadExchangeInfo() {
+        web3.eth.getBalance(exchange.options.address).then(function (balance) {
+            exchangeEth = new BigNumber(balance).shiftedBy(-18);
+        });
+        token.methods.balanceOf(exchange.options.address).call().then(function (balance) {
+            balance = new BigNumber(balance).shiftedBy(-18);
+            exchangeTokens = balance;
+
+            var x = balance.multipliedBy(3).div(50000).plus(30).toFixed(1);
+            var price = new BigNumber(1).minus(balance.div(5000000));
+            if (price.isNegative()) {
+                price = new BigNumber(0);
+            }
+            var y = price.multipliedBy(-280).plus(330).toFixed(1);
+            var svg = document.getElementById("price").contentDocument;
+            svg.getElementById('price').innerHTML = price.toFixed(6);
+            svg.getElementById('balance').innerHTML = balance.toFixed(0);
+            svg.getElementById('line').setAttribute('x1', x);
+            svg.getElementById('line').setAttribute('y1', y);
+            svg.getElementById('pointer').setAttribute('cx', x);
+            svg.getElementById('pointer').setAttribute('cy', y);
         });
     }
 
     function exchange() {
-        if (blocked) {
-            return;
-        } else if (network === null || tokenContract === null || exchangeContract === null) {
-            alert('switch the network');
-            return;
-        }
-
-        blocked = true;
-        if (account === null) {
-            ethereum.enable().then(function (accounts) {
-                if (accounts.length > 0) {
-                    account = accounts[0];
-                    loadAccount();
+        if (typeof window.ethereum === 'undefined') {
+            alert('ethereum is not loaded');
+        } else if (network === null) {
+            alert('switch to the mainnet or ropsten testnet');
+        } else if (account === null) {
+            new Promise(function (resolve) {
+                if (typeof ethereum.request === 'undefined') {
+                    ethereum.enable().then(resolve);
                 } else {
-                    account = null;
-                    clearAccount();
-                    document.getElementById('exchangeButton').innerHTML = 'connect';
-                    document.getElementById('logs').innerHTML = '';
-                    blocked = false;
+                    ethereum.request({method: 'eth_requestAccounts'}).then(resolve);
                 }
+            }).then(function () {
+                web3.eth.getChainId().then(function (newNetwork) {
+                    newNetwork = Number(newNetwork);
+                    if (newNetwork !== networkMain && newNetwork !== networkRopsten) {
+                        alert('switch the network');
+                    }
+                });
             }).catch(function (error) {
-                console.log(error.message);
-                blocked = false;
+                console.error(error);
+                if (error.message) {
+                    error = error.message;
+                }
+                alert(error);
             });
-        } else if (accountEth === null || accountTokens === null) {
-            loadAccount();
+        } else if (blocked) {
+            alert('confirm or reject previous tx');
         } else if (tabBuy) {
             buy();
         } else {
@@ -413,31 +466,39 @@
         if (eth.isNaN() || eth.isNegative()) {
             document.getElementById('exchangeTopHint').innerHTML = 'enter positive number';
             document.getElementById('exchangeTopInput').value = '';
-            blocked = false;
             return;
-        } else if (eth.isGreaterThan(accountEth)) {
+        } else if (accountEth !== null && eth.isGreaterThan(accountEth)) {
             document.getElementById('exchangeTopHint').innerHTML = 'not enough eth';
-            blocked = false;
             return;
         }
         document.getElementById('exchangeTopHint').innerHTML = '';
+        blocked = true;
 
-        var waitMessage;
-        exchangeContract.methods.buy().send({
+        var message;
+        exchange.methods.buy().send({
             from: account,
-            value: eth.shiftedBy(18).toFixed(0)
+            value: eth.shiftedBy(18)
         }).on('transactionHash', function (hash) {
+            message = logTx('purchase for ' + eth + ' ETH, ', hash);
             blocked = false;
-            waitMessage = document.createElement('span');
-            waitMessage.innerHTML = ', waiting confirmation...';
-            printLog('tx/' + hash, 'purchase, ', hash, waitMessage);
         }).on('confirmation', function (confirmationNumber, receipt) {
-            if (confirmationNumber == 0) {
-                waitMessage.innerHTML = receipt.status ? ', confirmed' : ', rejected';
+            if (confirmationNumber != 0) {
+                return;
+            }
+            if (!receipt.status) {
+                message.innerHTML = ' - rejected';
+            } else {
+                loadAccount();
+                loadExchangeInfo();
+                message.innerHTML = ' - confirmed';
             }
         }).catch(function (error) {
+            console.error(error);
+            if (error.message) {
+                error = error.message;
+            }
+            alert(error);
             blocked = false;
-            console.log(error.message);
         });
     }
 
@@ -446,20 +507,19 @@
         if (tokens.isNaN() || tokens.isNegative()) {
             document.getElementById('exchangeTopHint').innerHTML = 'enter positive number';
             document.getElementById('exchangeTopInput').value = '';
-            blocked = false;
             return;
-        } else if (tokens.isGreaterThan(accountTokens)) {
+        } else if (accountTokens !== null && tokens.isGreaterThan(accountTokens)) {
             document.getElementById('exchangeTopHint').innerHTML = 'not enough tokens';
-            blocked = false;
             return;
         }
         document.getElementById('exchangeTopHint').innerHTML = '';
+        blocked = true;
 
-        tokenContract.methods.allowance(
+        token.methods.allowance(
             account,
-            exchangeContract.options.address
+            exchange.options.address
         ).call().then(function (allowance) {
-            if (new BigNumber(allowance).isLessThan('1000000000000000000000000')) {
+            if (new BigNumber(allowance).isLessThan('100000000000000000000000')) {
                 approve();
             } else {
                 transfer();
@@ -467,148 +527,86 @@
         });
 
         function approve() {
-            var waitMessage;
-            tokenContract.methods.approve(
-                exchangeContract.options.address,
+            var message;
+            token.methods.approve(
+                exchange.options.address,
                 '10000000000000000000000000'
             ).send({
                 from: account
             }).on('transactionHash', function (hash) {
-                waitMessage = document.createElement('span');
-                waitMessage.innerHTML = ', waiting confirmation...';
-                printLog('tx/' + hash, 'approve, ', hash, waitMessage);
-                alert('confirm seconf transaction');
+                message = logTx('approve, ', hash);
+                alert('confirm second transaction');
                 transfer();
             }).on('confirmation', function (confirmationNumber, receipt) {
-                if (confirmationNumber == 0) {
-                    waitMessage.innerHTML = receipt.status ? ', confirmed' : ', rejected';
+                if (confirmationNumber != 0) {
+                    return;
+                }
+                if (!receipt.status) {
+                    message.innerHTML = ' - rejected';
+                } else {
+                    message.innerHTML = ' - confirmed';
                 }
             }).catch(function (error) {
+                console.error(error);
+                if (error.message) {
+                    error = error.message;
+                }
+                alert(error);
                 blocked = false;
-                console.log(error.message);
             });
         }
 
         function transfer() {
-            var waitMessage;
-            exchangeContract.methods.sell(tokens.shiftedBy(18).toFixed(0)).send({
+            var message;
+            exchange.methods.sell(tokens.shiftedBy(18).toFixed(0)).send({
                 from: account
             }).on('transactionHash', function (hash) {
+                message = logTx('sale ' + tokens + ' IQI, ', hash);
                 blocked = false;
-                waitMessage = document.createElement('span');
-                waitMessage.innerHTML = ', waiting confirmation...';
-                printLog('tx/' + hash, 'sale, ', hash, waitMessage);
             }).on('confirmation', function (confirmationNumber, receipt) {
-                if (confirmationNumber == 0) {
-                    waitMessage.innerHTML = receipt.status ? ', confirmed' : ', rejected';
+                if (confirmationNumber != 0) {
+                    return;
+                }
+                if (!receipt.status) {
+                    message.innerHTML = ' - rejected';
+                } else {
+                    loadAccount();
+                    loadExchangeInfo();
+                    message.innerHTML = ' - confirmed';
                 }
             }).catch(function (error) {
+                console.error(error);
+                if (error.message) {
+                    error = error.message;
+                }
+                alert(error);
                 blocked = false;
-                console.log(error.message);
             });
         }
     }
 
-    function setPage(newPage) {
-        if (page === newPage) {
-            return;
-        }
-        page = newPage;
-        document.getElementById('exchange').style.display = page === pageExchange ? 'block' : 'none';
-        document.getElementById('faq').style.display = page === pageFaq ? 'block' : 'none';
-        document.getElementById('bounty').style.display = page === pageBounty ? 'block' : 'none';
-        document.getElementById('headerFaq').className = page === pageFaq ? 'active' : '';
-        document.getElementById('headerBounty').className = page === pageBounty ? 'active' : '';
-    }
-
-    function setTab(newTabBuy) {
-        if (tabBuy === newTabBuy) {
-            return;
-        }
-        tabBuy = newTabBuy;
-        document.getElementById('exchangeTopLabel').innerHTML = tabBuy ? 'eth' : 'tokens';
-        document.getElementById('exchangeTopHint').innerHTML = '';
-        document.getElementById('exchangeTopInput').value = '';
-        document.getElementById('exchangeBottomLabel').innerHTML = tabBuy ? 'tokens' : 'eth';
-        document.getElementById('exchangeBottomHint').innerHTML = '';
-        document.getElementById('exchangeBottomInput').value = '';
-        if (account !== null && accountEth !== null && accountTokens !== null) {
-            document.getElementById('exchangeButton').innerHTML = tabBuy ? 'buy' : 'sell';
-        }
-        document.getElementById('buyButton').className = tabBuy ? 'active' : '';
-        document.getElementById('sellButton').className = tabBuy ? '' : 'active';
-    }
-
-    function printContractLinks(networkId) {
-        var baseUrl, tokenAddress, exchangeAddress;
-        switch (networkId) {
-            case networkRopsten:
-                baseUrl = 'https://ropsten.etherscan.io/address/';
-                tokenAddress = ropstenTokenAddress;
-                exchangeAddress = ropstenExchangeAddress;
-                break;
-            case networkGoerli:
-                baseUrl = 'https://goerli.etherscan.io/address/';
-                tokenAddress = goerliTokenAddress;
-                exchangeAddress = goerliExchangeAddress;
-                break;
-            default:
-                baseUrl = 'https://etherscan.io/address/';
-                tokenAddress = mainTokenAddress;
-                exchangeAddress = mainExchangeAddress;
-        }
-        document.getElementById('tokenAddress').title = tokenAddress;
-        document.getElementById('tokenAddress').href = baseUrl + tokenAddress;
-        document.getElementById('exchangeAddress').title = exchangeAddress;
-        document.getElementById('exchangeAddress').href = baseUrl + exchangeAddress;
-    }
-
-    function displayExchangeInfo(balance) {
-        var x = balance.multipliedBy(3).div(50000).plus(30).toFixed(1);
-        var price = new BigNumber(1).minus(balance.div(5000000));
-        if (price.isNegative()) {
-            price = new BigNumber(0);
-        }
-        var y = price.multipliedBy(-280).plus(330).toFixed(1);
-
-        var svg = document.getElementById("price").contentDocument;
-        svg.getElementById('price').innerHTML = price.toFixed(6);
-        svg.getElementById('balance').innerHTML = balance.toFixed(0);
-        svg.getElementById('line').setAttribute('x1', x);
-        svg.getElementById('line').setAttribute('y1', y);
-        svg.getElementById('pointer').setAttribute('cx', x);
-        svg.getElementById('pointer').setAttribute('cy', y);
-    }
-
-    function printLog(path, prefix, message, suffix) {
-        if (message === null || network === null) {
-            return;
-        }
+    function logTx(message, hash) {
         var p = document.createElement('p');
         p.classList.add('onestring');
-        if (prefix) {
-            var span = document.createElement('span');
-            span.innerHTML = prefix;
-            p.appendChild(span);
-        }
+        var span = document.createElement('span');
+        span.innerHTML = message + ', tx ';
+        p.appendChild(span);
         var a = document.createElement('a');
-        a.innerHTML = message;
+        a.innerHTML = hash;
         if (network === networkMain) {
-            a.href = 'https://etherscan.io/' + path;
+            a.href = 'https://etherscan.io/tx/' + hash;
         } else if (network === networkRopsten) {
-            a.href = 'https://ropsten.etherscan.io/' + path;
-        } else if (network === networkGoerli) {
-            a.href = 'https://goerli.etherscan.io/' + path;
+            a.href = 'https://ropsten.etherscan.io/tx/' + hash;
         }
         a.setAttribute('target', '_blank');
         a.setAttribute('rel', 'noopener');
         p.appendChild(a);
-        if (suffix) {
-            p.appendChild(suffix);
-        }
-
+        span = document.createElement('span');
+        span.innerHTML = ' - unconfirmed';
+        p.appendChild(span);
         var logs = document.getElementById('logs');
         logs.insertBefore(p, logs.firstChild);
+        return span;
     }
 
     function calculateTop() {

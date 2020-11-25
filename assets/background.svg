@@ -1,4 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" baseProfile="full" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" baseProfile="full" viewBox="0 0 100 100"
+     preserveAspectRatio="xMidYMid meet">
     <g fill="none" stroke="#49BCE7" stroke-width="0.1">
        <polyline points="0,100 20,20, 80,80 100,0" />
     </g>
