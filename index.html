@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<html lang="en">
     <head>
         <title>iq exchange</title>
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+        <meta charset="utf-8" />
 
         <meta name="description" content="the first true decentralized exchange for the iq invest token" />
-        <meta name="keywords" content="iq, iqi, ethereum, decentralized, exchange, token, invest" />
-
+        <meta name="keywords" content="iqi, ethereum, decentralized, exchange, token, invest, iqinvest" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="theme-color" content="#49BCE7" />
 
         <link rel="icon" href="assets/icon.png" />
         <link rel="stylesheet" href="assets/style.css" />
@@ -16,7 +17,7 @@
         <div id="notFooter">
             <div id="header">
                 <div>
-                    <img id="headerLogo" src="assets/logo.svg" width="64" height="64" title="logo" />
+                    <button id="headerStart" type="button" title="start"></button>
                 </div>
                 <div>
                     <button id="headerFaq" type="button">faq</button>
@@ -24,23 +25,22 @@
                 <div>
                     <button id="headerBounty" type="button">bounty</button>
                 </div>
+                <div>
+                    <button id="headerPartners" type="button">partners</button>
+                </div>
             </div>
             <div id="main">
                 <div id="exchange">
                     <h1>
-                        <a id="exchangeAddress" target="_blank" rel="noopener" href="/">exchange</a>
+                        <a id="exchangeAddress" target="_blank" rel="noopener"
+                           href="https://etherscan.io/address/0x102d766eF1c910CFa3337fC59aCE9E38Aa993e20">
+                            exchange</a>
                         for iq invest
-                        <a id="tokenAddress" target="_blank" rel="noopener" href="/">token</a>
+                        <a id="tokenAddress" target="_blank" rel="noopener"
+                           href="https://etherscan.io/address/0xB9076BB251285aa70E05d38fB1c061474AeFdb7a">
+                            token</a>
                     </h1>
-                    <div id="message">
-                        <p id="loading">loading...</p>
-                        <p id="notSupported">
-                            install
-                            <a target="_blank" rel="noopener" href="https://metamask.io">metamask</a>
-                            to continue
-                        </p>
-                        <p id="switchNetwork">switch the network</p>
-                    </div>
+                    <p id="startMessage">loading...</p>
                     <div id="halfContainer">
                         <div class="half">
                             <div class="box">
@@ -81,134 +81,163 @@
                         </div>
                     </div>
                     <div id="logs"></div>
-                    <ul>
-                        <li>
-                            IQ Invest is a young DeFi company that creates its own infrastructure based on blockchain technology.
-                            <br />
-                            We are working on creating a number of investment areas. The main task of our team is to promote blockchain technologies for a wide market of consumers
-                            <br />
-                            Our development plans are shown in the IQ Invest roadmap.
-                            <br />
-                            You can join our team by purchasing IQI tokens on our own exchange.
-                            <br />
-                            The bounty program for crypto industry enthusiasts contributes to the further popularization of our product.      
-                        </li>
-                        <li>
-                            <h2>Road map.</h2>
-                        </li>
-                        <li>
-                            1Q 2020 - IQ Token is in the testnet
-                        </li>
-                        <div class="line"></div>
-                        <li>
-                            2Q 2020 - start of the promotion, the first finished product based on the IQI Token
-                        </li>
-                        <div class="line"></div>
-                        <li>
-                            3Q 2020 - listing of the IQI token in one of the crypto exchanges
-                        </li>
-                        <div class="line"></div>
-                        <li>
-                            oct 2020 - IQ-bet platform
-                        </li>
-                        <div class="line"></div>
-                        <li>
-                            dec 2020 - IQ avia
-                        </li>
-                    </ul>
+                    <p class="text">
+                        IQ Invest is a young DeFi company that creates its own infrastructure based on blockchain technology.
+                    </p>
+                    <p class="text">
+                        We are working on creating a number of investment areas. The main task of our team is to promote blockchain technologies for a wide market of consumers.
+                    </p>
+                    <p class="text">
+                        Our development plans are shown in the IQ Invest roadmap.
+                    </p>
+                    <p class="text">
+                        You can join our team by purchasing IQI tokens in our own exchange.
+                    </p>
+                    <p class="text">
+                        The bounty program for crypto industry enthusiasts contributes to the further popularization of our product.
+                    </p>
+                    <h2>road map</h2>
+                    <p class="text">
+                        1Q 2020 - IQ Token is in the testnet
+                    </p>
+                    <div class="line"></div>
+                    <p class="text">
+                        2Q 2020 - start of the promotion, the first finished product based on the IQI Token
+                    </p>
+                    <div class="line"></div>
+                    <p class="text">
+                        3Q 2020 - listing of the IQI token in one of the crypto exchanges
+                    </p>
+                    <div class="line"></div>
+                    <p class="text">
+                        1Q 2021 - IQ-bet platform
+                    </p>
+                    <div class="line"></div>
+                    <p class="text">
+                        2Q 2022 - IQ avia
+                    </p>
                 </div>
                 <div id="faq">
                     <h1>faq</h1>
-                    <ul>
-                        <li>
-                            <h2>What's iq invest?</h2>
-                            <p>Iq invest is the small company consisting of blockchain developers and economists. Our goal is to develop and share the blockchain wisdom by mastering the existing market and creating the new ones. We are about to start our new betting platform <a target="_blank" rel="noopener" href="https://iqinvest.github.io/iqbet">soon</a>.
-                            </p>
-                        </li>
-                        <li>
-                            <h2>What's token?</h2>
-                            <p>Token is an ethereum-based <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Share_(finance)">share</a>. <a target="_blank" rel="noopener" href="https://ethereum.org">Ethereum</a> is the first world-wide money that allows applications to directly use this money. Tokens are stored in the ethereum network and regulated by computer code, unlike ordinary shares, which are controlled by an obsolete national economy. By owning a token, you own a part of an ethereum-based company.</p>
-                        </li>
-                        <li>
-                            <h2>What's this website for?</h2>
-                            <p>This is an exchange where anyone can buy and sell iq token.</p>
-                        </li>
-                        <li>
-                            <h2>Why do I need metamask?</h2>
-                            <p><a target="_blank" rel="noopener" href="https://metamask.io">Metamask</a> is an ethereum <a target="_blank" rel="noopener" href="https://ethereum.org/en/wallets">wallet</a>. You need it in order to connect to the ethereum network and keep your accounts. Follow the <a target="_blank" rel="noopener" href="https://metamask.io/download.html">instructions</a> to install and use your wallet.</p>
-                        </li>
-                        <li>
-                            <h2>Which network should I use?</h2>
-                            <p>Iq token deployed on main network and ropsten test network. You can use both of it. Tokens and ethereum have a market value only in the main network. You can use the ropsten test network to understand how the exchange works. The token and exchange in the test network have exactly the same functionality, but the ropsten ethereum is <a target="_blank" rel="noopener" href="https://faucet.metamask.io/">free</a>. Contact us if you want to use any other (not ropsten) test network.</p>
-                        </li>
-                        <li>
-                            <h2>How is the token price determined?</h2>
-                            <p>The token price depends on the number of tokens in the exchange. We use a simple linear function, because of the easier calculation and therefore lower trasaction fee.</p>
-                            <p>p = 1 - v/5000000, where</p>
-                            <p>p - price, eth/token</p>
-                            <p>v - number of tokens on the exchange</p>
-                            <p> This way the law of supply and demand is emulated without an order book, which makes it very easy to trade tokens.</p>
-                        </li>
-                        <li>
-                            <h2>Are there other exchanges available?</h2>
-                            <p>Sure! You can use <a target="_blank" rel="noopener" href="https://app.uniswap.org">uniswap</a>. Add a list https://iq-invest.ltd/list.json, see the <a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/iqinvest/iqinvest.github.io/master/docs/list.gif">screencast</a> explaining how, or use direct <a target="_blank" rel="noopener" href="https://app.uniswap.org/#/swap?theme=dark&outputCurrency=0xB9076BB251285aa70E05d38fB1c061474AeFdb7a">link</a> for the mainnet.</p>
-                        </li>
-                        <li>
-                            <h2>Are there mirrors available?</h2>
-                            <p>There is a <a target="_blank" rel="noopener" href="https://arweave.net/3mvjrYBVB-aHLaEgjX47GYDHHW2eKn6ZIXZ7D0dleOA">mirror</a> in a decentralized web, which makes iq exchange completely unregulated and unstoppable!</p>
-                        </li>
-                        <li>
-                            <h2>Where is a dapp listed?</h2>
-                            <p>Dapp is listed in <a target="_blank" rel="noopener" href="https://stateofthedapps.com/dapps/iq-exchange">stateofthedapps</a> and in <a target="_blank" rel="noopener" href="https://dappradar.com/ethereum/high-risk/iqi-exchange">dappradar</a>.</p>
-                        </li>
-                    </ul>
+                    <h2>What's iq invest?</h2>
+                    <p class="text">
+                        Iq invest is the small company consisting of blockchain developers and economists. Our goal is to develop and share the blockchain wisdom by mastering the existing market and creating the new ones. We are about to start our new betting platform <a target="_blank" rel="noopener" href="https://iqinvest.github.io/iqbet">soon</a>.
+                    </p>
+                    <h2>What's token?</h2>
+                    <p class="text">
+                        Token is an ethereum-based <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Share_(finance)">share</a>. <a target="_blank" rel="noopener" href="https://ethereum.org">Ethereum</a> is the first world-wide money that allows applications to directly use this money. Tokens are stored in the ethereum network and regulated by computer code, unlike ordinary shares, which are controlled by an obsolete national economy. By owning a token, you own a part of an ethereum-based company.
+                    </p>
+                    <h2>What's this website for?</h2>
+                    <p class="text">
+                        This is an exchange where anyone can buy and sell iq token.
+                    </p>
+                    <h2>Why do I need metamask?</h2>
+                    <p class="text">
+                        <a target="_blank" rel="noopener" href="https://metamask.io">Metamask</a> is an ethereum <a target="_blank" rel="noopener" href="https://ethereum.org/en/wallets">wallet</a>. You need it in order to connect to the ethereum network and keep your accounts. Follow the <a target="_blank" rel="noopener" href="https://metamask.io/download.html">instructions</a> to install and use your wallet. You can use a new <a target="_blank" rel="noopener" href="https://opera.com">Opera</a> browser also.
+                    </p>
+                    <h2>Which network should I use?</h2>
+                    <p class="text">
+                        Iq token is deployed in the mainnet and ropsten testnet. You can use both. Tokens and ethereum have a market value only in the mainnet. You can use the ropsten test network to understand how the exchange works. The token and exchange in the test network have exactly the same functionality, but the ropsten ethereum is <a target="_blank" rel="noopener" href="https://faucet.metamask.io/">free</a>. Contact us if you want to use any other (not ropsten) test network.
+                    </p>
+                    <h2>How is the token price determined?</h2>
+                    <p class="text">
+                        The token price depends on the number of tokens in the exchange. We use a simple linear function, because of the easier calculation and therefore lower trasaction fee.
+                    </p>
+                    <p class="text">p = 1 - v/5000000, where</p>
+                    <p class="text">p - price, eth/token</p>
+                    <p class="text">v - number of tokens in the exchange</p>
+                    <p class="text">
+                        This way the law of supply and demand is emulated without an order book, which makes it very easy to trade tokens.
+                    </p>
+                    <h2>Are there other exchanges available?</h2>
+                    <p class="text">
+                        Sure! You can use <a target="_blank" rel="noopener" href="https://app.uniswap.org">Uniswap</a>. Add a list https://iq-invest.ltd/list.json, see the <a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/iqinvest/iqinvest.github.io/master/docs/list.gif">screencast</a> explaining how, or use direct <a target="_blank" rel="noopener" href="https://app.uniswap.org/#/swap?theme=dark&outputCurrency=0xB9076BB251285aa70E05d38fB1c061474AeFdb7a">link</a> for the mainnet.
+                    </p>
+                    <h2>Why am I seeing the notification "Anyone can create..." in Uniswap?</h2>
+                    <p class="text">
+                        Anyone can create anything, including copy of Uniswap or any other project. Just double check the contract address - 0xB9076BB251285aa70E05d38fB1c061474AeFdb7a - to make sure you are using the canonical IQI token.
+                    </p>
+                    <h2>Are there mirrors available?</h2>
+                    <p class="text">
+                        There is a <a target="_blank" rel="noopener" href="https://arweave.net/3mvjrYBVB-aHLaEgjX47GYDHHW2eKn6ZIXZ7D0dleOA">mirror</a> in a decentralized web, which makes iq exchange completely unregulated and unstoppable!
+                    </p>
+                    <h2>Where is a dapp listed?</h2>
+                    <p class="text">
+                        Dapp is listed in <a target="_blank" rel="noopener" href="https://stateofthedapps.com/dapps/iq-exchange">stateofthedapps</a> and in <a target="_blank" rel="noopener" href="https://dappradar.com/ethereum/high-risk/iqi-exchange">dappradar</a>.
+                    </p>
                 </div>
                 <div id="bounty">
-                    <h1>Bounty program.</h1>
-                    <ul>
-                        <li>
-                            Text: write a text note, post information about the IQI token on specialized forums, channels, and communities*
-                            <br />
-                            Reward 1 - 5 IQI
-                        </li>
-                        <li>
-                            Video: tell about IQI on youtube** channel or post a video about us in the instagram feed, Tik-Tok***
-                            <br />
-                            Reward 5 - 50 IQI
-                        </li>
-                        <li>
-                            Social networks: stories or a combination of text and video content in social networks twitter, FB, linkedin****
-                            <br />
-                            Reward 2 - 10 IQI
-                        </li>
-                        <li>
-                            Registration of participants: recommend the purchase of an IQI token to your friends, followers, and interested people and get up to 150 tokens.
-                            <br />
-                            The invited person must indicate in the feedback form your and your metemask or Ethereum wallet from which the purchase was made.
-                            <br />
-                            Reward up to 150 IQI
-                        </li>
-                        <li>
-                            <h2>Send your works to <a href="mailto:tokeniqinvest@protonmail.com">tokeniqinvest@protonmail.com</a></h2>
-                        </li>
-                        <li>
-                            Conditions:
-                            <br />
-                            Bounty requests can be reviewed within 7 business days.
-                            <br />
-                            All posts, videos, and texts must be marked with the hashtag #IQITOKEN and #IQINVEST.
-                            <br />
-                            * For text notes. Your blog, channel, or community should have at least 100 unique visitors per day, and the topic of the community, channel, or blog should coincide with the activities of IQ Invest - finance, cryptocurrency.
-                            <br />
-                            ** the channel has from 500 users, the theme of the heat of investment, cryptocurrencies, trading. The promotion of views and likes is not accepted.
-                            <br />
-                            *** Instagram, Tik Tok account has at least 300 users. Business and entertainment content.
-                            <br />
-                            **** Instagram, Tik Tok account has at least 300 users. Business and entertainment content, Facebook at least 100 friends, account must be updated with all content. Twitter - 50 or more readers, the account must have fresh publications on business, investment, and cryptocurrencies.
-                            <br />
-                            We do not accept accounts, publications and video content made on new accounts, without a history, with a high percentage of cheating statistics and non-core IQ token areas of activity.
-                        </li>
-                    </ul>
+                    <h1>bounty program</h1>
+                    <p class="text">
+                        Text: write a text note, post information about the IQI token on specialized forums, channels, and communities*
+                        <br />
+                        Reward 1 - 5 IQI
+                    </p>
+                    <p class="text">
+                        Video: tell about IQI on youtube** channel or post a video about us in the instagram, tik-tok***
+                        <br />
+                        Reward 5 - 50 IQI
+                    </p>
+                    <p class="text">
+                        Social networks: stories or a combination of text and video content in social networks, twitter, facebook, linkedin****
+                        <br />
+                        Reward 2 - 10 IQI
+                    </p>
+                    <p class="text">
+                        Registration of participants: recommend the purchase of an IQI token to your friends, followers, and interested people and get up to 150 tokens.
+                        <br />
+                        The invited person must indicate in the feedback form your and your ethereum wallet from which the purchase was made.
+                        <br />
+                        Reward up to 150 IQI
+                    </p>
+                    <p class="text">
+                        Send your works to <a href="mailto:tokeniqinvest@protonmail.com">tokeniqinvest@protonmail.com</a>
+                    </p>
+                    <p class="text">
+                        Bounty requests can be reviewed within 7 business days.
+                        <br />
+                        All posts, videos, and texts must be marked with the hashtag #IQITOKEN and #IQINVEST.
+                        <br />
+                        * For text notes. Your blog, channel or community should have at least 100 unique visitors per day, and the topic of the community, channel, or blog should coincide with the activities of IQ Invest - finance, cryptocurrency.
+                        <br />
+                        ** The channel has from 500 users, the theme of the heat of investment, cryptocurrencies, trading. The promotion of views and likes is not accepted.
+                        <br />
+                        *** Instagram, tik-tok account has at least 300 users. Business and entertainment content.
+                        <br />
+                        **** Facebook at least 100 friends, account must be updated with all content. Twitter - 50 or more readers, the account must have fresh publications on business, investment, and cryptocurrencies.
+                        <br />
+                        We do not accept accounts, publications and video content made on new accounts, without a history, with a high percentage of cheating statistics and non-core IQ token areas of activity.
+                    </p>
+                </div>
+                <div id="partners">
+                    <h1>our partners</h1>
+                    <div>
+                        <img src="assets/partners/coinpedia.png" width="128" height="128"
+                             alt="coinpedia logo" />
+                        <p>
+                            <a target="_blank" rel="noopener" href="https://coinpedia.org">
+                                CoinPedia - fintech and cryptocurrency news media
+                            </a>
+                        </p>
+                    </div>
+                    <div>
+                        <img src="assets/partners/gitcoin.png" width="128" height="128"
+                             alt="gitcoin logo" />
+                        <p>
+                            <a target="_blank" rel="noopener" href="https://gitcoin.co">
+                                Gitcoin - community of web3's top developers
+                            </a>
+                        </p>
+                    </div>
+                    <div>
+                        <img src="assets/partners/stateofthedapps.png" width="128" height="128"
+                             alt="stateofthedapps logo" />
+                        <p>
+                            <a target="_blank" rel="noopener" href="https://stateofthedapps.com">
+                                State of the dapps - explore decentralized appications
+                            </a>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -217,18 +246,31 @@
                 <a href="mailto:hello@iq-invest.ltd" title="hello@iq-invest.ltd">mail</a>
             </div>
             <div>
-                <a target="_blank" rel="noopener" href="https://t.me/IQinvestToken" title="t.me/IQinvestToken">telegram</a>
+                <a target="_blank" rel="noopener" href="https://t.me/IQinvestToken"
+                   title="t.me/IQinvestToken">
+                    telegram
+                </a>
             </div>
             <div>
-                <a target="_blank" rel="noopener" href="https://twitter.com/iq_token" title="twitter.com/iq_token">twitter</a>
+                <a target="_blank" rel="noopener" href="https://twitter.com/iq_token"
+                   title="twitter.com/iq_token">
+                    twitter
+                </a>
             </div>
             <div>
-                <a target="_blank" rel="noopener" href="https://github.com/iqinvest" title="github.com/iqinvest">github</a>
+                <a target="_blank" rel="noopener" href="https://github.com/iqinvest"
+                   title="github.com/iqinvest">
+                    github
+                </a>
             </div>
             <div>
-                <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/iqi-token-19a9aa1b4" title="linkedin.com/in/iqi-token-19a9aa1b4">linkedin</a>
+                <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/iqi-token-19a9aa1b4"
+                   title="linkedin.com/in/iqi-token-19a9aa1b4">
+                    linkedin
+                </a>
             </div>
         </div>
+        <script src="assets/bignumber.min.js"></script>
         <script src="assets/script.js"></script>
     </body>
 </html>
