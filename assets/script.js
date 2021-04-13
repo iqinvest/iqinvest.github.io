@@ -594,10 +594,10 @@
         }
         token.methods.balanceOf(exchange.options.address).call().then(function (balance) {
             exchangeIqi = new BigNumber(balance).shiftedBy(-18);
-            var x = exchangeIqi.multipliedBy(-3).div(50000).plus(340).toFixed(1);
-            var y = exchangeIqi.multipliedBy(3).div(50000).plus(30).toFixed(1);
+            var x = exchangeIqi.multipliedBy(-3).div(500).plus(30047).toFixed(1);
+            var y = exchangeIqi.multipliedBy(3).div(500).minus(29670).toFixed(1);
             var price = exchangeIqi.div(-5000000).plus(1).toFixed(6);
-            var volume = exchangeIqi.minus(5000000).div(-1000000).toFixed(9);
+            var volume = exchangeIqi.minus(5000000).div(-1000).toFixed(3);
             var svg = document.getElementById('price').contentDocument;
             svg.getElementById('pointer').setAttribute('cx', x);
             svg.getElementById('pointer').setAttribute('cy', y);
