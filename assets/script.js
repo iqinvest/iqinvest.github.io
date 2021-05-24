@@ -7,8 +7,11 @@
     var mainExchangeAddress = '0x102d766eF1c910CFa3337fC59aCE9E38Aa993e20';
     var ropstenTokenAddress = '0xe7286c430B35CE0ab7539210bD21F528dA5e5670';
     var ropstenExchangeAddress = '0xcEfe405674339E93D8b7E7329Bfaf22D7d7923c9';
+    var bscTestTokenAddress = '0xB9076BB251285aa70E05d38fB1c061474AeFdb7a';
+    var bscTestExchangeAddress = '0xf22aa7994A8056e6b6d7E7A507cbE19D52c0068D';
     var networkMain = 1;
     var networkRopsten = 3;
+    var networkBscTest = 97;
     var tokenAbi = [
         {
             "constant": false,
@@ -195,12 +198,13 @@
     function load() {
         web3.eth.getChainId().then(function (newNetwork) {
             newNetwork = Number(newNetwork);
-            if (newNetwork !== networkMain && newNetwork !== networkRopsten) {
+            if (newNetwork !== networkMain && newNetwork !== networkRopsten &&
+                newNetwork !== networkBscTest) {
                 network = null;
                 account = null;
                 document.getElementById('exchangeButton').innerHTML = 'connect';
                 document.getElementById('startMessage').innerHTML =
-                    'switch to the mainnet or ropsten testnet';
+                    'switch to the ethereum mainnet, ropsten testnet or bsc testnet';
                 printContractLinks(networkMain);
                 clearExchangeInfo();
                 clearAccount();
@@ -215,6 +219,9 @@
                 } else if (network === networkRopsten) {
                     token = new web3.eth.Contract(tokenAbi, ropstenTokenAddress);
                     exchange = new web3.eth.Contract(exchangeAbi, ropstenExchangeAddress);
+                } else if (network === networkBscTest) {
+                    token = new web3.eth.Contract(tokenAbi, bscTestTokenAddress);
+                    exchange = new web3.eth.Contract(exchangeAbi, bscTestExchangeAddress);
                 }
                 token.events.Transfer().on('data', loadAccount);
                 exchange.events.allEvents().on('data', loadExchangeInfo);
@@ -275,6 +282,11 @@
                 'https://ropsten.etherscan.io/address/' + ropstenTokenAddress;
             document.getElementById('exchangeAddress').href =
                 'https://ropsten.etherscan.io/address/' + ropstenExchangeAddress;
+        } else if (network === networkBscTest) {
+            document.getElementById('tokenAddress').href =
+                'https://testnet.bscscan.com/address/' + bscTestTokenAddress;
+            document.getElementById('exchangeAddress').href =
+                'https://testnet.bscscan.com/address/' + bscTestExchangeAddress;
         }
     }
 
@@ -427,7 +439,7 @@
         } else if (!web3loaded) {
             startLoading();
         } else if (!network) {
-            alert('switch to the mainnet or ropsten testnet');
+            alert('switch to the ethereum mainnet, ropsten testnet or bsc testnet');
         } else if (!account) {
             startLoading();
             if (!ethereum.request) {
@@ -620,6 +632,8 @@
             p.innerHTML = 'ethereum mainnet';
         } else if (network === networkRopsten) {
             p.innerHTML = 'ethereum ropsten test network';
+        } else if (network === networkBscTest) {
+            p.innerHTML = 'bsc testnet';
         }
         div.insertBefore(p, div.firstChild);
     }
@@ -636,6 +650,8 @@
             a.href = 'https://etherscan.io/address/' + account;
         } else if (network === networkRopsten) {
             a.href = 'https://ropsten.etherscan.io/address/' + account;
+        } else if (network === networkBscTest) {
+            a.href = 'https://testnet.bscscan.com/address/' + account;
         }
         a.setAttribute('target', '_blank');
         a.setAttribute('rel', 'noopener');
@@ -656,6 +672,8 @@
             a.href = 'https://etherscan.io/tx/' + hash;
         } else if (network === networkRopsten) {
             a.href = 'https://ropsten.etherscan.io/tx/' + hash;
+        } else if (network === networkBscTest) {
+            a.href = 'https://testnet.bscscan.com/tx/' + hash;
         }
         a.setAttribute('target', '_blank');
         a.setAttribute('rel', 'noopener');
