@@ -1,5 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
-    <circle cx="50" cy="50" r="40" fill="#49BCE7" />
-    <circle cx="50" cy="50" r="25" fill="none" stroke="black" stroke-width="10" />
-    <line x1="70" y1="70" x2="60" y2="60" stroke="black" stroke-width="10" />
-</svg>
