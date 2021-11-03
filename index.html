@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>iqi exchange</title>
+        <title>iqi</title>
 
         <meta charset="utf-8" />
 
@@ -10,171 +10,65 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="theme-color" content="#49BCE7" />
 
-        <link rel="icon" href="assets/logo196.png" />
-        <link rel="stylesheet" href="assets/style.css" />
+        <link rel="icon" href="logo196.png" />
+        <link rel="stylesheet" href="style.css" />
     </head>
     <body>
-        <div id="noFooter">
-            <div id="header">
-                <div><button id="headerMain" type="button" title="main"></button></div>
-                <div><button id="headerBounty" type="button">bounty</button></div>
-                <div><button id="headerPartners" type="button">partners</button></div>
-            </div>
-            <div id="main">
-                <h1>
-                    the
-                    <a href="https://etherscan.io/address/0xB9076BB251285aa70E05d38fB1c061474AeFdb7a"
-                       id="tokenAddress" target="_blank" rel="noopener">iqi</a>
-                    <a href="https://etherscan.io/address/0x102d766eF1c910CFa3337fC59aCE9E38Aa993e20"
-                       id="exchangeAddress" target="_blank" rel="noopener">exchange</a>
-                </h1>
-                <p id="startMessage">loading...</p>
-                <div class="halfContainer">
-                    <div class="half">
-                        <div class="box">
-                            <div id="boxHeader">
-                                <div><button id="buyButton" type="button" class="active">buy</button></div>
-                                <div><button id="sellButton" type="button">sell</button></div>
-                            </div>
-                            <p id="balanceContainer">
-                                your balance
-                                <span id="balanceEth">...</span>
-                                eth,
-                                <span id="balanceTokens">...</span>
-                                iqi
-                            </p>
-                            <label>
-                                from
-                                <span id="exchangeTopLabel">eth</span>
-                                <span id="exchangeTopHint" class="hint"></span>
-                                <input id="exchangeTopInput" type="text" maxlength="30" />
-                            </label>
-                            <label>
-                                to
-                                <span id="exchangeBottomLabel">iqi</span>
-                                <span id="exchangeBottomHint" class="hint"></span>
-                                <input id="exchangeBottomInput" type="text" maxlength="30" />
-                            </label>
-                            <button id="exchangeButton" type="button">connect</button>
+        <div id="main">
+            <h1>the
+                <a href="https://etherscan.io/address/0xB9076BB251285aa70E05d38fB1c061474AeFdb7a"
+                   id="tokenAddress" target="_blank" rel="noopener">iqi</a>
+                <a href="https://etherscan.io/address/0x102d766eF1c910CFa3337fC59aCE9E38Aa993e20"
+                   id="exchangeAddress" target="_blank" rel="noopener">exchange</a>
+            </h1>
+            <p id="startMessage">loading...</p>
+            <div class="halfContainer">
+                <div class="half">
+                    <div class="box">
+                        <div id="boxHeader">
+                            <div><button id="buyButton" type="button" class="active">buy</button></div>
+                            <div><button id="sellButton" type="button">sell</button></div>
                         </div>
-                    </div>
-                    <div class="half">
-                        <div class="box">
-                            <object id="price" type="image/svg+xml" data="assets/price.svg">
-                                price chart
-                            </object>
-                        </div>
+                        <p id="balanceContainer">your balance
+                            <span id="balanceEth">...</span> eth,
+                            <span id="balanceTokens">...</span> iqi</p>
+                        <label>from
+                            <span id="exchangeTopLabel">eth</span>
+                            <span id="exchangeTopHint" class="hint"></span>
+                            <input id="exchangeTopInput" type="text" maxlength="30" />
+                        </label>
+                        <label>to
+                            <span id="exchangeBottomLabel">iqi</span>
+                            <span id="exchangeBottomHint" class="hint"></span>
+                            <input id="exchangeBottomInput" type="text" maxlength="30" />
+                        </label>
+                        <button id="exchangeButton" type="button">connect</button>
                     </div>
                 </div>
-                <div id="logs"></div>
-                <div id="faq">
-                    <h2>What's iq invest?</h2>
-                    <p>
-                        Iq invest is the open source and open community investment company
-                        powered by blockchain.
-                    </p>
-                    <h2>How do you make a profit?</h2>
-                    <p>
-                        Old-school companies convince the society that they are doing well,
-                        and because of this, they can increase the volume of their loans.
-                        Cryptoeconomics uses the real money, not a credit pseudo-money,
-                        thus our profit is obtained only by trading tokens.
-                    </p>
-                    <h2>How can I make a profit?</h2>
-                    <p>Buy iqi, hold it, sell it.</p>
-                    <h2>Why do you use your own exchange?</h2>
-                    <p>
-                        Iqi exchange is the best exchange ever created.
-                        It's easy to undertstand how it works.
-                        It has the smallest fee and was created
-                        specifically for the iqi token and the investment company.
-                    </p>
-                    <h2>How is the token price determined?</h2>
-                    <p>
-                        The token price depends on the number of tokens in circulation.<br />
-                        p = 1 - (7000000 - v)/5000000, where<br />
-                        p - price, eth/iqi,<br />
-                        v - number of tokens in circulation, iqi.
-                    </p>
-                    <h2>Which network should i use?</h2>
-                    <p>
-                        Iqi is deployed in the mainnet and ropsten testnet.
-                        Tokens and ethereum have a market value only in the mainnet.
-                        Use testnet to understand how the exchange works.
-                        Get free test eth in
-                        <a href="https://faucet.metamask.io/" target="_blank" rel="noopener">faucet</a>.
-                    </p>
-                    <h2>How can i promote iqi?</h2>
-                    <p>
-                        Buy iqi, promote it, gain profit.
-                        Any major holder (more than 100000 iqi) can create a separate page, such as
-                        <a href="https://iq-invest.ltd?page=bounty"
-                           target="_blank" rel="noopener">bounty page</a>.
-                        Any iqi holder or contributor can place a logo and short description on the
-                        <a href="https://iq-invest.ltd?page=partners"
-                           target="_blank" rel="noopener">partners page</a>.
-                    </p>
+                <div class="half">
+                    <div class="box">
+                        <object id="price" type="image/svg+xml" data="price.svg">price chart</object>
+                    </div>
                 </div>
             </div>
-            <div id="bounty">
-                <h3>road map</h3>
-                <p>1Q 2020 - iq token is in the testnet</p>
-                <div class="line"></div>
-                <p>2Q 2020 - iqi exchange</p>
-                <div class="line"></div>
-                <p>3Q 2020 - listing of the iqi in one of the crypto exchanges</p>
-                <div class="line"></div>
-                <p>1Q 2021 - cooperation with the investment marketplace</p>
-                <div class="line"></div>
-                <p>2Q 2022 - iqi blockchain</p>
-                <br />
-                <p>
-                    IQ Invest is a young DeFi company that creates its own infrastructure
-                    based on blockchain technology.
-                </p>
-                <p>
-                    We are working on creating a number of investment areas.
-                    The main task of our team is to promote blockchain technologies
-                    for a wide market of consumers.
-                </p>
-                <h3>audit, bug bounty</h3>
-                <p>
-                    We are looking for an independent security audit for the iqi token and iqi exchange.
-                    It will be published in the etherscan. Reward - 100 iqi.
-                </p>
-                <p>
-                    White-hat hack the iqi token or iqi exchange. Reward - up to 10000 iqi.
-                </p>
-                <h3>promo bounty</h3>
-                <p>
-                    Post information about the iqi token in forums, channels or communities.
-                    Tell about the iqi in social networks.
-                    Reward 1 - 50 iqi.
-                </p>
-                <h3>contacts</h3>
-                <p>
-                    <a href="https://t.me/IQinvestToken" target="_blank" rel="noopener">telegram channel</a>
-                </p>
-                <p>
-                    <a href="https://twitter.com/iq_token" target="_blank" rel="noopener">twitter</a>
-                </p>
-                <p>
-                    <a href="https://www.linkedin.com/in/iqi-token-19a9aa1b4"
-                       target="_blank" rel="noopener">linkedin</a>
-                </p>
-                <p>
-                    <a href="mailto:tokeniqinvest@protonmail.com">tokeniqinvest@protonmail.com</a>
-                </p>
-            </div>
-            <div id="partners"></div>
-        </div>
-        <div id="footer">
-            <div><a href="mailto:hello@iq-invest.ltd">mail</a></div>
-            <div><a href="https://t.me/iqi_invest" target="_blank" rel="noopener">telegram</a></div>
-            <div><a href="https://github.com/iqinvest" target="_blank" rel="noopener">github</a></div>
+            <div id="logs"></div>
+            <h2>this project is for sale!!!</h2>
+            <ul>
+                <li>absolutely unique design</li>
+                <li>verified <a href="https://etherscan.io/address/0xB9076BB251285aa70E05d38fB1c061474AeFdb7a"
+                                target="_blank" rel="noopener">token page</a></li>
+                <li>2 years of trading</li>
+                <li>built-in exchange with the lowest gas consumption</li>
+                <li>fully removable administrator rights</li>
+                <li>forever free <a href="https://github.com/iqinvest/iqinvest.github.io"
+                                    target="_blank" rel="noopener">hosting</a></li>
+                <li>1 year warranty and support</li>
+            </ul>
+            <h3>price 1.1 eth</h3>
+            <h3>jeff@iq-invest.ltd</h3>
         </div>
         <div id="loading"><div></div></div>
-        <script src="assets/bignumber.min.js"></script>
-        <script src="assets/script.js"></script>
+        <script src="bignumber.min.js"></script>
+        <script src="script.js"></script>
     </body>
 </html>
