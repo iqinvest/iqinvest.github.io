@@ -28,7 +28,7 @@ a {
 a:focus {
     color: white;
 }
-h1, h2, h3 {
+h1, h2 {
     overflow: hidden;
     text-align: center;
     font-weight: normal;
@@ -132,15 +132,16 @@ label input:focus {
     overflow: hidden;
     text-overflow: ellipsis;
 }
-h2 {
+#about h2 {
     margin: 32px;
     font-size: 200%;
 }
-ul {
-    padding-left: 10%;
+#about h3 {
+    margin: 16px 32px;
+    font-weight: normal;
 }
-h3 {
-    margin: 32px;
+#about p {
+    margin: 16px;
 }
 #loading {
     overflow: hidden;
